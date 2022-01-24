@@ -1,15 +1,17 @@
 import React from "react";
 import * as S from './Counters.styled';
 import DeletedTasks from "../DeletedTasks/DeletedTasks";
-import NewTasks from "../NewTasks/NewTasks";
+import AddTasks from "../AddTasks/AddTasks";
 import DoneTasks from "../DoneTasks/DoneTasks";
+import {useSelector} from "react-redux";
 
-const Counters = ({deleteCount, newCount, doneCount}) => {
+const Counters = () => {
+    const {tasksDeleteCount, tasksAddCount, tasksDoneCount} = useSelector(state => state);
     return (
         <S.Wrap>
-            <NewTasks newCount={newCount} />
-            <DoneTasks doneCount={doneCount} />
-            <DeletedTasks deleteCount={deleteCount} />
+            <AddTasks addCount={tasksAddCount} />
+            <DoneTasks doneCount={tasksDoneCount} />
+            <DeletedTasks deleteCount={tasksDeleteCount} />
         </S.Wrap>
     )
 }

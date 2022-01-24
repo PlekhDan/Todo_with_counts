@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import * as S from './ToDoForm.styled';
+import * as S from './TaskForm.styled';
 
 // сделать, чтобы нельзя было добавлять пустую строку
 
-const ToDoForm = ({ addTask}) => {
+const TaskForm = ({ addTask}) => {
     const [userInput, setUserInput] = useState('');
 
     const handleChange = (event) => {
@@ -27,4 +27,4 @@ const ToDoForm = ({ addTask}) => {
     )
 }
 
-export default ToDoForm;
+export default TaskForm;
