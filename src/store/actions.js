@@ -1,9 +1,9 @@
 import * as actions from './actionTypes';
 
-export const toggleTask = id => ({
-    type: actions.TASK_TOGGLE,
-    payload: {id},
-});
+export const fetchInitialTasks = tasks => ({
+    type: actions.FETCH_INITIAL_TASKS,
+    payload: tasks,
+})
 
 export const deleteTask = id => ({
     type: actions.TASK_DELETE,
@@ -23,7 +23,12 @@ export const addTasksCount = () => ({
     type: actions.COUNT_ADD_TASKS,
 });
 
-export const doneTasksCount = () => ({
+export const toggleTask = id => ({
+    type: actions.TASK_TOGGLE,
+    payload: {id},
+});
+
+export const doneTasksCount = (tasks) => ({
     type: actions.COUNT_DONE_TASKS,
-    // payload: {id},
+    payload: {tasks},
 })

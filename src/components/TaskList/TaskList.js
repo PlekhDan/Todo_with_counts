@@ -2,7 +2,7 @@ import React from "react";
 import Task from '../Task/Task';
 import {useSelector} from "react-redux";
 
-const TaskList = ({handleToggle, handleDelete}) => {
+const TaskList = ({handleToggle, handleDelete, handleToggleCount}) => {
     const {tasks} = useSelector(state => state);
     return (
         <div>
@@ -12,6 +12,7 @@ const TaskList = ({handleToggle, handleDelete}) => {
                         task={task}
                         handleToggle={handleToggle}
                         handleDelete={handleDelete}
+                        handleToggleCount={handleToggleCount}
                         key={task.id}
                     />
                 )

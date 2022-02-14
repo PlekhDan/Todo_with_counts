@@ -1,8 +1,11 @@
 import * as actions from '../store/actionTypes';
-import {data} from '../data';
+// import {data} from '../data';
 
-export default function tasks(state = data, action) {
+export default function tasks(state = [], action) {
     switch(action.type) {
+        case actions.FETCH_INITIAL_TASKS:
+            return action.payload
+
         case actions.TASK_TOGGLE:
             return state.map(task => {
                 return task.id === action.payload.id ? {...task, complete: !task.complete} : {...task}

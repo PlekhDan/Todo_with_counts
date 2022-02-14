@@ -5,30 +5,20 @@ import TaskList from './components/TaskList/TaskList';
 import TaskForm from "./components/TaskForm/TaskForm";
 import * as S from './App.styled';
 import Counters from "./components/Counters/Counters";
-import {addTask, addTasksCount, deleteCount, deleteTask, doneTasksCount, toggleTask} from "./store/actions";
-import {useDispatch, useSelector} from "react-redux";
-import tasksDeleteCount from "./reducers/tasksDeleteCount";
-import tasksAddCount from "./reducers/tasksAddCount";
-import tasksDoneCount from "./reducers/tasksDoneCount";
-import {logDOM} from "@testing-library/react";
+import {
+    addTask,
+    addTasksCount,
+    deleteCount,
+    deleteTask,
+    doneTasksCount,
+    fetchInitialTasks,
+    toggleTask
+} from "./store/actions";
+import {useDispatch} from "react-redux";
+import store from "./store/store";
 
 function App() {
-    const {tasks} = useSelector(state => state)
     const dispatch = useDispatch();
-
-    // console.log(tasks)
-    // const [toDoList, setToDoList] = useState([]);
-    // const [toDoList, setToDoList] = useState(data);
-    // const [deletedCount, setDeleteCount] = useState(0);
-    // const [newCount, setNewCount] = useState(0);
-    // const [doneCount, setDoneCount] = useState(initialDoneCount);
-
-    // function initialDoneCount() {
-    //     return toDoList.reduce((sum, current) => {
-    //         if (current['complete']) sum += 1
-    //         return sum
-    //     }, 0)
-    // }
 
     // useEffect( () => {
     //     let fetchData = async () => {
@@ -39,49 +29,44 @@ function App() {
     //     fetchData();
     // }, [])
 
-    // useEffect(() => {
-    //     setDoneCount(initialDoneCount)
-    // })
-
-    // const handleToggle = (id) => {
-    //     let mapped = toDoList.map(task => {
-    //         return task.id === id ? {...task, complete: !task.complete} : {...task};
-    //     });
-    //     setToDoList(mapped);
-    //
-    //     // dispatch(toggleTask(id))
-    // };
-
-    // const handleDelete = (id) => {
-    //     let filtered = toDoList.filter(task => task.id !== id);
-    //     setToDoList(filtered);
-    //     setDeleteCount(deletedCount + 1);
-    // }
-
-    // const addTask = (userInput) => {
-    //     setToDoList([
-    //         ...toDoList,
-    //         {
-    //             "id": toDoList[toDoList.length - 1]['id'] + 1,
-    //             "title": userInput,
-    //             "complete": false
-    //         }
-    //     ]);
-    //     setNewCount(newCount + 1);
-    // }
-
-    // useEffect(() => {
-    //     const initialDoneTasks = () => {
-    //         const result = tasks.reduce((sum, current) => current['complete'] ? sum + 1 : sum , 0)
-    //         console.log(result)
-    //         return result
+    // useEffect( () => {
+    //     const fetchData = async () => {
+    //         const response = await fetch('https://jsonplaceholder.typicode.com/todos').then(res => res.json())
+    //         return response;
     //     }
-    //     initialDoneTasks();
-    // }, [handleToggle])
+    //     fetchData();
+    //     dispatch(fetchInitialTasks)
+    // }, [])
+
+    // const fetchTasks = () => {
+    //     return fetch('https://jsonplaceholder.typicode.com/todos').then(response => {
+    //         console.log(response.json())
+    //         return response.json()
+    //     })
+    // }
+
+    // const fetchTasks = () => async dispatch => {}
+
+    useEffect(() => {
+        function fetchTasks() {
+            return async function fetchTasksThunk(dispatch) {
+                const response = await fetch('https://jsonplaceholder.typicode.com/todos').then(res => res.json())
+                dispatch(fetchInitialTasks(response))
+            }
+        }
+        dispatch(fetchTasks())
+    }, [])
+
+
+    useEffect(() => {
+        // dispatch(fetchInitialTasks)
+        dispatch(doneTasksCount(store.getState().tasks))
+    }, [])
 
     const handleDelete = id => {
         dispatch(deleteTask(id))
         dispatch(deleteCount())
+        dispatch(doneTasksCount(store.getState().tasks))
     };
 
     const handleAddTask = title => {
@@ -89,16 +74,19 @@ function App() {
         dispatch(addTasksCount())
     };
 
-    const handleToggle = id => {
+    const handleToggle = (id) => {
         dispatch(toggleTask(id))
-        dispatch(doneTasksCount())
-    }
+    };
+
+    const handleToggleCount = () => {
+        dispatch(doneTasksCount(store.getState().tasks))
+    };
 
     return (
         <S.AppWrap>
             <S.Title>To Do List</S.Title>
             <Counters />
-            <TaskList handleDelete={handleDelete} handleToggle={handleToggle} />
+            <TaskList handleDelete={handleDelete} handleToggle={handleToggle} handleToggleCount={handleToggleCount} />
             <TaskForm addTask={handleAddTask} />
         </S.AppWrap>
     );

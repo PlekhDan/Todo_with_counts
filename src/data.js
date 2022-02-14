@@ -1,12 +1,12 @@
 export const data = [{
   "id": 1,
   "title": "Give dog a bath",
-  "complete": false
+  "complete": true
   },
   {
   "id": 2,
   "title": "Do laundry",
-  "complete": false
+  "complete": true
   },
   {
   "id": 3,
